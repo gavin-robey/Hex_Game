@@ -3,7 +3,6 @@ import java.util.Scanner;
 
 public class Assignment6Driver {
     public static void main(String[] args) {
-
         //testGame();
         //playGame("moves1.txt");
         //System.out.println();
@@ -45,9 +44,9 @@ public class Assignment6Driver {
 //
 //        printGrid(game);
 //    }
-
     // TODO: Complete this method
 //    private static void printGrid(HexGame game) {
 //    }
 
+    }
 }
