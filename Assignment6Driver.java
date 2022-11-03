@@ -2,11 +2,44 @@ import java.io.File;
 import java.util.Scanner;
 
 public class Assignment6Driver {
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001B[37m";
+
+    
     public static void main(String[] args) {
         //testGame();
         //playGame("moves1.txt");
         //System.out.println();
         //playGame("moves2.txt");
+        DisjointSet set = new DisjointSet(20);
+
+        set.union(0, 1);
+        set.union(2, 3);
+        set.union(2, 4);
+        set.union(4, 5);
+        set.union(1, 3);
+        set.union(6, 3);
+        set.union(7, 8);
+        // set.union(8, 9);
+        // set.union(8, 9);
+        set.print();
+        
+        // System.out.println(ANSI_RED + "This text is red!" + ANSI_RESET);
+    }
+
+    public static void union(DisjointSet set, int node1, int node2){
+        int root1 = set.find(node1);
+        int root2 = set.find(node2);
+        if(root1 != root2){
+            set.union(node1, node2);
+        }
     }
 
     private static void playGame(String filename) {
@@ -43,10 +76,8 @@ public class Assignment6Driver {
 //        game.playBlue(62, true);
 //
 //        printGrid(game);
-//    }
+    }
     // TODO: Complete this method
 //    private static void printGrid(HexGame game) {
 //    }
-
-    }
 }
