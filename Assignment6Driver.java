@@ -19,27 +19,16 @@ public class Assignment6Driver {
         //System.out.println();
         //playGame("moves2.txt");
         DisjointSet set = new DisjointSet(20);
-
-        set.union(0, 1);
-        set.union(2, 3);
-        set.union(2, 4);
-        set.union(4, 5);
-        set.union(1, 3);
-        set.union(6, 3);
-        set.union(7, 8);
-        // set.union(8, 9);
-        // set.union(8, 9);
+        set.union(1, 4);
+        set.union(1, 5);
+        set.union(1, 5);
+        set.union(6, 7);
+        set.union(4, 7);
+        // set.find(6);
+        // set.find(5);
         set.print();
         
         // System.out.println(ANSI_RED + "This text is red!" + ANSI_RESET);
-    }
-
-    public static void union(DisjointSet set, int node1, int node2){
-        int root1 = set.find(node1);
-        int root2 = set.find(node2);
-        if(root1 != root2){
-            set.union(node1, node2);
-        }
     }
 
     private static void playGame(String filename) {

@@ -1,46 +1,65 @@
+import java.util.Arrays;
 public class DisjointSet {
     private int size;
-    private int[] subSet;
+    private int[] parent;
+    private int[] numOfNodes;
+
 
     public DisjointSet(int size){
         this.size = size;
-        this.subSet = new int[size];
+        this.parent = new int[size];
+        this.numOfNodes = new int[size];
         buildTree();
     }
 
     public void print(){
-        for(int i = 0; i < subSet.length; i++){
-            System.out.println("|" + i + "|" + subSet[i] +"|");
-        }
+        System.out.println(Arrays.toString(parent));
     }
 
     private void buildTree(){
         for(int i = 0; i < this.size; i++){
-            subSet[i] = -1;
+            numOfNodes[i] = -1;
+            parent[i] = i;
         }
     }
 
     // smart union by size
     public void union(int node1, int node2){
-        if(subSet[node1] <= subSet[node2]){
-            subSet[node2] += subSet[node1];
-            subSet[node1] = node2;
-        }else{
-            int parent = subSet[node1];
-            if(parent >= 0){
-                subSet[parent] += subSet[node2];
-                subSet[node2] = subSet[node1];
-            }else{
-                subSet[node2] += subSet[node1];
-                subSet[node1] = node2;
-            }
+        int root1 = find(node1);
+        int root2 = find(node2);
+
+        if(root1 == root2) {
+            return;
+        }
+
+        if(numOfNodes[root1] > numOfNodes[root2]){
+            parent[root1] = root2;
+            numOfNodes[root2] = numOfNodes[root2] - 1;
+        }
+
+        else if (numOfNodes[root2] > numOfNodes[root1]){
+            parent[root2] = root1;
+            numOfNodes[root1] = numOfNodes[root1] - 1;
+        }
+
+        else{
+            parent[root1] = root2;
+            numOfNodes[root2] = numOfNodes[root2] - 1;
         }
     }
 
+    // Finds the root node and sets the current nodes parent to the root node
     public int find(int node){
-        if(subSet[node] > -1){
-            subSet[node] = find(subSet[node]);
+        int foundParent = findParent(node);
+        parent[node] = foundParent;
+        return foundParent;
+    }
+
+    // recursivly finds the root node and returns the value of the root node
+    private int findParent(int node){
+        if (parent[node] != node) {
+            parent[node] = find(parent[node]);
         }
-        return node;   
+        return parent[node];
     }
 }
