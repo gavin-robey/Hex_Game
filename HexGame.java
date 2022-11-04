@@ -1,5 +1,6 @@
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.LinkedHashSet;
 
 public class HexGame {
     private int boardSize;
@@ -8,6 +9,9 @@ public class HexGame {
     private int rowSize;
     private int totalBoardSize;
     private Integer[] board;
+    private Set<Integer> insertedReds;
+    private Set<Integer> insertedBlues;
+    private Set<Integer> occupied;
 
     public HexGame(int boardSize){
         this.boardSize = boardSize;
@@ -16,6 +20,9 @@ public class HexGame {
         this.rowSize = boardSize + 2;
         this.totalBoardSize = rowSize * rowSize;
         this.board = new Integer[totalBoardSize];
+        this.insertedBlues = new LinkedHashSet<>();
+        this.insertedReds = new LinkedHashSet<>();
+        this.occupied = new LinkedHashSet<>();
         buildBoard();
     }
 
@@ -51,13 +58,21 @@ public class HexGame {
     public int getBlue(){return this.BLUE;}
     public int getRed(){return this.RED;}
 
-    public boolean isTopEdge(int index){ return index < this.rowSize; }
-    public boolean isBottomEdge(int index){ return index >= this.totalBoardSize - this.rowSize; }
-    public boolean isLeftEdge(int index){ return index % this.rowSize == 0;}
-    public boolean isRightEdge(int index){ return (index - (this.boardSize + 1)) % this.rowSize == 0; }
+    private boolean isTopEdge(int index){ return index < this.rowSize; }
+    private boolean isBottomEdge(int index){ return index >= this.totalBoardSize - this.rowSize; }
+    private boolean isLeftEdge(int index){ return index % this.rowSize == 0;}
+    private boolean isRightEdge(int index){ return (index - (this.boardSize + 1)) % this.rowSize == 0; }
 
     public boolean isEdge(int index){
         return isTopEdge(index) || isBottomEdge(index)||  isLeftEdge(index) || isRightEdge(index);
+    }
+
+    public boolean blueContains(int position){
+        return insertedBlues.contains(position);
+    }
+
+    public boolean redContains(int position){
+        return insertedReds.contains(position);
     }
 
     public boolean playBlue(int position, boolean displayNeighbors){
@@ -66,12 +81,12 @@ public class HexGame {
         // Then union all neighbors with the position requested
         // Then add to the other array that keeps track of colors and fun stuff
         ArrayList<Integer> neighbors = getNeighborsBlue(convertToIndex(position));
+        if(!this.occupied.contains(position)){
+            this.occupied.add(position);
+            this.insertedBlues.add(position);
+        }
 
         if(displayNeighbors){
-            int index = Arrays.asList(board).indexOf(position);
-            if(index >= 0){
-                board[index] = BLUE;
-            }
             System.out.println(neighbors.toString());
         }
         return true;
@@ -79,12 +94,12 @@ public class HexGame {
 
     public boolean playRed(int position, boolean displayNeighbors){
         ArrayList<Integer> neighbors = getNeighborsRed(convertToIndex(position));
+        if(!this.occupied.contains(position)){
+            this.occupied.add(position);
+            this.insertedReds.add(position);
+        }
     
         if(displayNeighbors){
-            int index = Arrays.asList(board).indexOf(position);
-            if(index >= 0){
-                board[index] = RED;
-            }
             System.out.println(neighbors.toString());
         }
         return false;
@@ -126,6 +141,13 @@ public class HexGame {
 
         allNeighbors.add(board[top]);
         allNeighbors.add(board[bottom]);
+
+        // remove all duplicates
+        Set<Integer> set = new LinkedHashSet<>();
+        set.addAll(allNeighbors);
+        allNeighbors.clear();
+        allNeighbors.addAll(set);
+
         return allNeighbors;
     }
 
@@ -150,14 +172,13 @@ public class HexGame {
 
         allNeighbors.add(board[left]);
         allNeighbors.add(board[right]);
-        return allNeighbors;
-    }
 
-    private boolean isOccupied(int position){
-        boolean isOccupied = false;
-        if(board[position] == BLUE || board[position] == RED){
-            isOccupied = true;
-        }
-        return isOccupied;
+        // remove all duplicates
+        Set<Integer> set = new LinkedHashSet<>();
+        set.addAll(allNeighbors);
+        allNeighbors.clear();
+        allNeighbors.addAll(set);
+
+        return allNeighbors;
     }
 }

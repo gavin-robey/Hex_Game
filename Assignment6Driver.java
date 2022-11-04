@@ -52,7 +52,7 @@ public class Assignment6Driver {
         game.playBlue(62, true);
 
         System.out.println();
-        game.printBoard();
+        printGrid(game);
     }
 
     private static void printGrid(HexGame game) {
@@ -62,10 +62,10 @@ public class Assignment6Driver {
         int indentCount = 1;
         for(int i = 0; i < board.length; i++){
             if(!game.isEdge(i)){
-                if(board[i] == game.getBlue()){
+                if(game.blueContains(board[i])){
                     boardElements += ANSI_BLUE + "B " + ANSI_RESET;
                 }
-                else if(board[i]  == game.getRed()){
+                else if(game.redContains(board[i])){
                     boardElements += ANSI_RED + "R " + ANSI_RESET;
                 }
                 else{
