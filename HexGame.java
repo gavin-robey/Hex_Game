@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.ArrayList;
 
 public class HexGame {
     private int boardSize;
@@ -50,31 +51,101 @@ public class HexGame {
     public int getBlue(){return this.BLUE;}
     public int getRed(){return this.RED;}
 
-    public boolean isEdge(int i){
-        boolean isTopEdge = i < this.rowSize;
-        boolean isBottomEdge = i >= this.totalBoardSize - this.rowSize;
-        boolean isLeftEdge = i % this.rowSize == 0;
-        boolean isRightEdge = (i - (this.boardSize + 1)) % this.rowSize == 0;
+    public boolean isEdge(int position){
+        boolean isTopEdge = position < this.rowSize;
+        boolean isBottomEdge = position >= this.totalBoardSize - this.rowSize;
+        boolean isLeftEdge = position % this.rowSize == 0;
+        boolean isRightEdge = (position - (this.boardSize + 1)) % this.rowSize == 0;
         return isTopEdge || isBottomEdge ||  isLeftEdge || isRightEdge;
     }
 
     public boolean playBlue(int position, boolean displayNeighbors){
-        // take the position and find where its at in range not including the edges
+        // take the position and find where its at in range not including the edges done
         // Then find all the neighbors of the position
-        // Then union all neigbors with the poistion requested
+        // Then union all neighbors with the position requested
         // Then add to the other array that keeps track of colors and fun stuff
         int index = Arrays.asList(board).indexOf(position);
         if(index >= 0){
-            board[index] = BLUE;
+            board[index] = BLUE;   
         }
+
+        ArrayList<Integer> neighbors = getNeighborsBlue(convertToIndex(position));
+        System.out.println(neighbors.toString());
+
         return true;
     }
 
     public boolean playRed(int position, boolean displayNeighbors){
+        ArrayList<Integer> neighbors = getNeighborsRed(convertToIndex(position));
+        System.out.println(neighbors.toString());
+
         int index = Arrays.asList(board).indexOf(position);
         if(index >= 0){
             board[index] = RED;
         }
         return false;
+    }
+
+    private int convertToIndex(int position){
+        int count = 1;
+        int index = 0;
+        for(int i = 0; i < board.length; i++){
+            if(!isEdge(i)){
+                count++;
+            }
+            if(count == position){
+                index = (i + 1);
+            }
+        }
+        return index;
+    }
+
+    // given an index, each neighbor index is found then each neighbor value is returned
+    private ArrayList<Integer> getNeighborsRed(int position){
+        ArrayList<Integer> allNeighbors = new ArrayList<>();
+        
+        Integer left = position - 1;
+        Integer right = position + 1;
+        Integer top = position - rowSize;
+        Integer topRight = position - (rowSize + 1);
+        Integer bottomLeft = position + (rowSize + 1);
+        Integer bottom = position + rowSize;
+
+        allNeighbors.add(board[left]);
+        allNeighbors.add(board[right]);
+        allNeighbors.add(board[top]);
+        allNeighbors.add(board[topRight]);
+        allNeighbors.add(board[bottomLeft]);
+        allNeighbors.add(board[bottom]);
+
+        return allNeighbors;
+    }
+
+    private ArrayList<Integer> getNeighborsBlue(int position){
+        ArrayList<Integer> allNeighbors = new ArrayList<>();
+
+        Integer left = position - 1;
+        Integer right = position + 1;
+        Integer top = position - rowSize;
+        Integer topRight = position - (rowSize + 1);
+        Integer bottomLeft = position + (rowSize + 1);
+        Integer bottom = position + rowSize;
+
+        allNeighbors.add(board[left]);
+        allNeighbors.add(board[right]);
+        allNeighbors.add(board[top]);
+        allNeighbors.add(board[topRight]);
+        allNeighbors.add(board[bottomLeft]);
+        allNeighbors.add(board[bottom]);
+
+        return allNeighbors;
+    }
+
+    private boolean isOccupied(int position){
+        boolean isOccupied = false;
+        if(board[position] == BLUE || board[position] == RED){
+            isOccupied = true;
+        }
+        return isOccupied;
     }
 }

@@ -51,6 +51,7 @@ public class Assignment6Driver {
         game.playBlue(122 - 11, true);
         game.playBlue(62, true);
 
+        System.out.println();
         printGrid(game);
     }
 
