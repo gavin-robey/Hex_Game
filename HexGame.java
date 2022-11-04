@@ -64,24 +64,28 @@ public class HexGame {
         // Then find all the neighbors of the position
         // Then union all neighbors with the position requested
         // Then add to the other array that keeps track of colors and fun stuff
-        int index = Arrays.asList(board).indexOf(position);
-        if(index >= 0){
-            board[index] = BLUE;   
-        }
-
         ArrayList<Integer> neighbors = getNeighborsBlue(convertToIndex(position));
-        System.out.println(neighbors.toString());
+
+        if(displayNeighbors){
+            int index = Arrays.asList(board).indexOf(position);
+            if(index >= 0){
+                board[index] = BLUE;
+            }
+            System.out.println(neighbors.toString());
+        }
 
         return true;
     }
 
     public boolean playRed(int position, boolean displayNeighbors){
         ArrayList<Integer> neighbors = getNeighborsRed(convertToIndex(position));
-        System.out.println(neighbors.toString());
-
-        int index = Arrays.asList(board).indexOf(position);
-        if(index >= 0){
-            board[index] = RED;
+    
+        if(displayNeighbors){
+            int index = Arrays.asList(board).indexOf(position);
+            if(index >= 0){
+                board[index] = RED;
+            }
+            System.out.println(neighbors.toString());
         }
         return false;
     }
@@ -101,15 +105,15 @@ public class HexGame {
     }
 
     // given an index, each neighbor index is found then each neighbor value is returned
-    private ArrayList<Integer> getNeighborsRed(int position){
+    private ArrayList<Integer> getNeighborsRed(int index){
         ArrayList<Integer> allNeighbors = new ArrayList<>();
         
-        Integer left = position - 1;
-        Integer right = position + 1;
-        Integer top = position - rowSize;
-        Integer topRight = position - (rowSize + 1);
-        Integer bottomLeft = position + (rowSize + 1);
-        Integer bottom = position + rowSize;
+        Integer left = index - 1;
+        Integer right = index + 1;
+        Integer top = index - rowSize;
+        Integer topRight = index - (rowSize + 1);
+        Integer bottomLeft = index + (rowSize + 1);
+        Integer bottom = index + rowSize;
 
         allNeighbors.add(board[left]);
         allNeighbors.add(board[right]);
