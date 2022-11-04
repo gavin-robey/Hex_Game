@@ -51,12 +51,13 @@ public class HexGame {
     public int getBlue(){return this.BLUE;}
     public int getRed(){return this.RED;}
 
-    public boolean isEdge(int position){
-        boolean isTopEdge = position < this.rowSize;
-        boolean isBottomEdge = position >= this.totalBoardSize - this.rowSize;
-        boolean isLeftEdge = position % this.rowSize == 0;
-        boolean isRightEdge = (position - (this.boardSize + 1)) % this.rowSize == 0;
-        return isTopEdge || isBottomEdge ||  isLeftEdge || isRightEdge;
+    public boolean isTopEdge(int index){ return index < this.rowSize; }
+    public boolean isBottomEdge(int index){ return index >= this.totalBoardSize - this.rowSize; }
+    public boolean isLeftEdge(int index){ return index % this.rowSize == 0;}
+    public boolean isRightEdge(int index){ return (index - (this.boardSize + 1)) % this.rowSize == 0; }
+
+    public boolean isEdge(int index){
+        return isTopEdge(index) || isBottomEdge(index)||  isLeftEdge(index) || isRightEdge(index);
     }
 
     public boolean playBlue(int position, boolean displayNeighbors){
@@ -73,7 +74,6 @@ public class HexGame {
             }
             System.out.println(neighbors.toString());
         }
-
         return true;
     }
 
@@ -115,21 +115,17 @@ public class HexGame {
         Integer bottomLeft = index + (rowSize - 1);
         Integer bottom = index + rowSize;
 
-        boolean isLeftEdge = left % this.rowSize == 0;
-        boolean isRightEdge = (right - (this.boardSize + 1)) % this.rowSize == 0;
-
-        if(!isRightEdge){
+        if(!isRightEdge(right)){
             allNeighbors.add(board[right]);
             allNeighbors.add(board[topRight]);
         }
-        if(!isLeftEdge){
+        if(!isLeftEdge(left)){
             allNeighbors.add(board[left]);
             allNeighbors.add(board[bottomLeft]);
         }
 
         allNeighbors.add(board[top]);
         allNeighbors.add(board[bottom]);
-
         return allNeighbors;
     }
 
@@ -143,22 +139,17 @@ public class HexGame {
         Integer bottomLeft = index + (rowSize - 1);
         Integer bottom = index + rowSize;
 
-        boolean isTopEdge = top < this.rowSize;
-        boolean isBottomEdge = bottom >= this.totalBoardSize - this.rowSize;
-
-        if(!isTopEdge){
+        if(!isTopEdge(top)){
             allNeighbors.add(board[top]);
             allNeighbors.add(board[topRight]);
         }
-        if(!isBottomEdge){
+        if(!isBottomEdge(bottom)){
             allNeighbors.add(board[bottom]);
             allNeighbors.add(board[bottomLeft]);
         }
 
         allNeighbors.add(board[left]);
         allNeighbors.add(board[right]);
-        
-
         return allNeighbors;
     }
 
