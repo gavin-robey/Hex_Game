@@ -14,21 +14,10 @@ public class Assignment6Driver {
 
     
     public static void main(String[] args) {
-        //testGame();
+        testGame();
         //playGame("moves1.txt");
         //System.out.println();
-        //playGame("moves2.txt");
-        DisjointSet set = new DisjointSet(20);
-        set.union(1, 4);
-        set.union(1, 5);
-        set.union(1, 5);
-        set.union(6, 7);
-        set.union(4, 7);
-        // set.find(6);
-        // set.find(5);
-        set.print();
-        
-        // System.out.println(ANSI_RED + "This text is red!" + ANSI_RESET);
+        //playGame("moves2.txt");    
     }
 
     private static void playGame(String filename) {
@@ -44,29 +33,41 @@ public class Assignment6Driver {
     //
     // TODO: You can use this to compare with the output show in the assignment while working on your code
     private static void testGame() {
-//        HexGame game = new HexGame(11);
-//
-//        System.out.println("--- red ---");
-//        game.playRed(1, true);
-//        game.playRed(11, true);
-//        game.playRed(122 - 12, true);
-//        game.playRed(122 - 11, true);
-//        game.playRed(122 - 10, true);
-//        game.playRed(121, true);
-//        game.playRed(61, true);
-//
-//        System.out.println("--- blue ---");
-//        game.playBlue(1, true);
-//        game.playBlue(2, true);
-//        game.playBlue(11, true);
-//        game.playBlue(12, true);
-//        game.playBlue(121, true);
-//        game.playBlue(122 - 11, true);
-//        game.playBlue(62, true);
-//
-//        printGrid(game);
+        HexGame game = new HexGame(11);
+        
+
+        System.out.println("--- red ---");
+        game.playRed(1, true);
+        game.playRed(11, true);
+        game.playRed(122 - 12, true);
+        game.playRed(122 - 11, true);
+        game.playRed(122 - 10, true);
+        game.playRed(121, true);
+        game.playRed(61, true);
+
+        System.out.println("--- blue ---");
+        game.playBlue(1, true);
+        game.playBlue(2, true);
+        game.playBlue(11, true);
+        game.playBlue(12, true);
+        game.playBlue(121, true);
+        game.playBlue(122 - 11, true);
+        game.playBlue(62, true);
+
+        game.printBoard();
     }
-    // TODO: Complete this method
-//    private static void printGrid(HexGame game) {
-//    }
+    private static void printGrid(HexGame game) {
+        Integer[] board = game.getBoard();
+        for(int i = 0; i < board.length; i++){
+            if(board[i] < 0){
+                System.out.println(ANSI_BLUE + "B" + ANSI_RESET);
+            }
+            else if(board[i] >= (game.getBoardSize() * game.getBoardSize())){
+                System.out.println(ANSI_RED + "R" + ANSI_RESET);
+            }
+            else{
+                System.out.println("0");
+            }
+        }
+    }
 }

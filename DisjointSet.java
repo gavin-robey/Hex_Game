@@ -1,14 +1,14 @@
 import java.util.Arrays;
 public class DisjointSet {
     private int size;
-    private int[] parent;
-    private int[] numOfNodes;
+    private Integer[] parent;
+    private Integer[] numOfNodes;
 
 
     public DisjointSet(int size){
         this.size = size;
-        this.parent = new int[size];
-        this.numOfNodes = new int[size];
+        this.parent = new Integer[size];
+        this.numOfNodes = new Integer[size];
         buildTree();
     }
 
@@ -21,6 +21,10 @@ public class DisjointSet {
             numOfNodes[i] = -1;
             parent[i] = i;
         }
+    }
+
+    public Integer[] getParent(){
+        return parent;
     }
 
     // smart union by size
