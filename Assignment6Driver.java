@@ -58,9 +58,9 @@ public class Assignment6Driver {
         Integer[] board = game.getBoard();
         int elementCount = 1;
         String boardElements = "";
+        int indentCount = 1;
         for(int i = 0; i < board.length; i++){
             if(!game.isEdge(i)){
-                boardElements.indent(elementCount);
                 if(board[i] == game.getBlue()){
                     boardElements += ANSI_BLUE + "B " + ANSI_RESET;
                 }
@@ -73,6 +73,10 @@ public class Assignment6Driver {
                 
                 if(elementCount % game.getBoardSize() == 0){
                     boardElements += "\n";
+                    for(int indents = 0; indents < indentCount; indents++){
+                        boardElements += " ";
+                    }
+                    indentCount++;
                 }
                 elementCount++;
             }
