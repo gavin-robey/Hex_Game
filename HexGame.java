@@ -111,36 +111,53 @@ public class HexGame {
         Integer left = index - 1;
         Integer right = index + 1;
         Integer top = index - rowSize;
-        Integer topRight = index - (rowSize + 1);
-        Integer bottomLeft = index + (rowSize + 1);
+        Integer topRight = index - (rowSize - 1);
+        Integer bottomLeft = index + (rowSize - 1);
         Integer bottom = index + rowSize;
 
-        allNeighbors.add(board[left]);
-        allNeighbors.add(board[right]);
+        boolean isLeftEdge = left % this.rowSize == 0;
+        boolean isRightEdge = (right - (this.boardSize + 1)) % this.rowSize == 0;
+
+        if(!isRightEdge){
+            allNeighbors.add(board[right]);
+            allNeighbors.add(board[topRight]);
+        }
+        if(!isLeftEdge){
+            allNeighbors.add(board[left]);
+            allNeighbors.add(board[bottomLeft]);
+        }
+
         allNeighbors.add(board[top]);
-        allNeighbors.add(board[topRight]);
-        allNeighbors.add(board[bottomLeft]);
         allNeighbors.add(board[bottom]);
 
         return allNeighbors;
     }
 
-    private ArrayList<Integer> getNeighborsBlue(int position){
+    private ArrayList<Integer> getNeighborsBlue(int index){
         ArrayList<Integer> allNeighbors = new ArrayList<>();
 
-        Integer left = position - 1;
-        Integer right = position + 1;
-        Integer top = position - rowSize;
-        Integer topRight = position - (rowSize + 1);
-        Integer bottomLeft = position + (rowSize + 1);
-        Integer bottom = position + rowSize;
+        Integer left = index - 1;
+        Integer right = index + 1;
+        Integer top = index- rowSize;
+        Integer topRight = index - (rowSize - 1);
+        Integer bottomLeft = index + (rowSize - 1);
+        Integer bottom = index + rowSize;
+
+        boolean isTopEdge = top < this.rowSize;
+        boolean isBottomEdge = bottom >= this.totalBoardSize - this.rowSize;
+
+        if(!isTopEdge){
+            allNeighbors.add(board[top]);
+            allNeighbors.add(board[topRight]);
+        }
+        if(!isBottomEdge){
+            allNeighbors.add(board[bottom]);
+            allNeighbors.add(board[bottomLeft]);
+        }
 
         allNeighbors.add(board[left]);
         allNeighbors.add(board[right]);
-        allNeighbors.add(board[top]);
-        allNeighbors.add(board[topRight]);
-        allNeighbors.add(board[bottomLeft]);
-        allNeighbors.add(board[bottom]);
+        
 
         return allNeighbors;
     }

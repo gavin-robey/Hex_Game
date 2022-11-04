@@ -52,7 +52,7 @@ public class Assignment6Driver {
         game.playBlue(62, true);
 
         System.out.println();
-        printGrid(game);
+        game.printBoard();
     }
 
     private static void printGrid(HexGame game) {
