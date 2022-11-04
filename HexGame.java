@@ -2,28 +2,18 @@ import java.util.Arrays;
 
 public class HexGame {
     private int boardSize;
-    private int TOP_EDGE; 
-    private int BOTTOM_EDGE;
-    private int LEFT_EDGE;
-    private int RIGHT_EDGE; 
     private int BLUE;
     private int RED;
     private int rowSize;
     private int totalBoardSize;
-    private DisjointSet set;
     private Integer[] board;
 
     public HexGame(int boardSize){
         this.boardSize = boardSize;
-        this.TOP_EDGE = (boardSize * boardSize) + 1;
-        this.BOTTOM_EDGE = (boardSize * boardSize) + 2;
-        this.LEFT_EDGE = (boardSize * boardSize) + 3;
-        this.RIGHT_EDGE = (boardSize * boardSize) + 4;
         this.RED = (boardSize * boardSize) + 5;
         this.BLUE = (boardSize * boardSize) + 6;
         this.rowSize = boardSize + 2;
         this.totalBoardSize = rowSize * rowSize;
-        this.set = new DisjointSet(totalBoardSize);
         this.board = new Integer[totalBoardSize];
         buildBoard();
     }
@@ -31,14 +21,14 @@ public class HexGame {
     private void buildBoard(){
         int total = 1;
         for(int i = 0; i < board.length; i++){
-            if(i < rowSize){
-                board[i] = TOP_EDGE;
-            }else if(i >= totalBoardSize - rowSize){
-                board[i] = BOTTOM_EDGE;
-            }else if(i % rowSize == 0){
-                board[i] = LEFT_EDGE;
-            }else if((i - (boardSize + 1)) % rowSize == 0){
-                board[i] = RIGHT_EDGE;
+            if(i < this.rowSize){
+                board[i] = (boardSize * boardSize) + 1;
+            }else if(i >= this.totalBoardSize - this.rowSize){
+                board[i] = (boardSize * boardSize) + 2;
+            }else if(i % this.rowSize == 0){
+                board[i] = (boardSize * boardSize) + 3;
+            }else if((i - (this.boardSize + 1)) % this.rowSize == 0){
+                board[i] = (boardSize * boardSize) + 4;
             }else{
                 board[i] = total;
                 total++;
@@ -55,26 +45,27 @@ public class HexGame {
         }
     }
 
-    public Integer[] getBoard(){
-        return this.board;
-    }
+    public Integer[] getBoard(){return this.board;}
+    public int getBoardSize(){ return this.boardSize;}
+    public int getBlue(){return this.BLUE;}
+    public int getRed(){return this.RED;}
 
-    public int getBoardSize(){
-        return this.totalBoardSize;
-    }
-
-    public int getBlue(){
-        return this.BLUE;
-    }
-
-    public int getRed(){
-        return this.RED;
+    public boolean isEdge(int i){
+        boolean isTopEdge = i < this.rowSize;
+        boolean isBottomEdge = i >= this.totalBoardSize - this.rowSize;
+        boolean isLeftEdge = i % this.rowSize == 0;
+        boolean isRightEdge = (i - (this.boardSize + 1)) % this.rowSize == 0;
+        return isTopEdge || isBottomEdge ||  isLeftEdge || isRightEdge;
     }
 
     public boolean playBlue(int position, boolean displayNeighbors){
+        // take the position and find where its at in range not including the edges
+        // Then find all the neighbors of the position
+        // Then union all neigbors with the poistion requested
+        // Then add to the other array that keeps track of colors and fun stuff
         int index = Arrays.asList(board).indexOf(position);
         if(index >= 0){
-            board[index] = -position;
+            board[index] = BLUE;
         }
         return true;
     }
@@ -82,7 +73,7 @@ public class HexGame {
     public boolean playRed(int position, boolean displayNeighbors){
         int index = Arrays.asList(board).indexOf(position);
         if(index >= 0){
-            board[index] = position + (totalBoardSize * totalBoardSize);
+            board[index] = RED;
         }
         return false;
     }

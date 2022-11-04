@@ -30,12 +30,9 @@ public class Assignment6Driver {
         }
     }
 
-    //
-    // TODO: You can use this to compare with the output show in the assignment while working on your code
     private static void testGame() {
         HexGame game = new HexGame(11);
         
-
         System.out.println("--- red ---");
         game.playRed(1, true);
         game.playRed(11, true);
@@ -54,20 +51,32 @@ public class Assignment6Driver {
         game.playBlue(122 - 11, true);
         game.playBlue(62, true);
 
-        game.printBoard();
+        printGrid(game);
     }
+
     private static void printGrid(HexGame game) {
         Integer[] board = game.getBoard();
+        int elementCount = 1;
+        String boardElements = "";
         for(int i = 0; i < board.length; i++){
-            if(board[i] < 0){
-                System.out.println(ANSI_BLUE + "B" + ANSI_RESET);
-            }
-            else if(board[i] >= (game.getBoardSize() * game.getBoardSize())){
-                System.out.println(ANSI_RED + "R" + ANSI_RESET);
-            }
-            else{
-                System.out.println("0");
+            if(!game.isEdge(i)){
+                boardElements.indent(elementCount);
+                if(board[i] == game.getBlue()){
+                    boardElements += ANSI_BLUE + "B " + ANSI_RESET;
+                }
+                else if(board[i]  == game.getRed()){
+                    boardElements += ANSI_RED + "R " + ANSI_RESET;
+                }
+                else{
+                    boardElements += "0 ";
+                }
+                
+                if(elementCount % game.getBoardSize() == 0){
+                    boardElements += "\n";
+                }
+                elementCount++;
             }
         }
+        System.out.print(boardElements);
     }
 }
