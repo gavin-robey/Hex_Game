@@ -13,7 +13,13 @@ public class DisjointSet {
     }
 
     public void print(){
-        System.out.println(Arrays.toString(parent));
+        for(int i = 0; i < parent.length; i++){
+            System.out.print(parent[i] + " ");
+            if((i - (11 + 1)) % (11 + 2) == 0){
+                System.out.println();
+            }
+        }
+        // System.out.println(Arrays.toString(parent));
     }
 
     private void buildTree(){

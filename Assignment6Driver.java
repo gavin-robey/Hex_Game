@@ -14,16 +14,27 @@ public class Assignment6Driver {
 
     
     public static void main(String[] args) {
-        testGame();
-        //playGame("moves1.txt");
-        //System.out.println();
-        //playGame("moves2.txt");    
+        // testGame();
+        playGame("moves1.txt");
+        System.out.println();
+        playGame("moves2.txt");    
     }
 
     private static void playGame(String filename) {
+        HexGame game = new HexGame(11);
         File file = new File(filename);
         try (Scanner input = new Scanner(file)) {
-            // TODO: Write some good stuff here
+            int count = 0;
+            while (input.hasNext()) {
+                if(count % 2 == 0){
+                    game.playBlue(input.nextInt(), false);
+                    count++;
+                }else{
+                    game.playRed(input.nextInt(), false);
+                    count++;
+                } 
+            }
+            printGrid(game);
         }
         catch (java.io.IOException ex) {
             System.out.println("An error occurred trying to read the moves file: " + ex);
@@ -52,7 +63,7 @@ public class Assignment6Driver {
         game.playBlue(62, true);
 
         System.out.println();
-        printGrid(game);
+        game.printBoard();
     }
 
     private static void printGrid(HexGame game) {

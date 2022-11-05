@@ -1,5 +1,9 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
+
+import javax.sound.sampled.SourceDataLine;
+
 import java.util.LinkedHashSet;
 
 public class HexGame {
@@ -12,6 +16,8 @@ public class HexGame {
     private Set<Integer> insertedReds;
     private Set<Integer> insertedBlues;
     private Set<Integer> occupied;
+    private DisjointSet redSet;
+    private DisjointSet blueSet;
 
     public HexGame(int boardSize){
         this.boardSize = boardSize;
@@ -23,6 +29,8 @@ public class HexGame {
         this.insertedBlues = new LinkedHashSet<>();
         this.insertedReds = new LinkedHashSet<>();
         this.occupied = new LinkedHashSet<>();
+        this.redSet = new DisjointSet(totalBoardSize);
+        this.blueSet = new DisjointSet(totalBoardSize);
         buildBoard();
     }
 
@@ -76,32 +84,72 @@ public class HexGame {
     }
 
     public boolean playBlue(int position, boolean displayNeighbors){
-        // take the position and find where its at in range not including the edges done
-        // Then find all the neighbors of the position
-        // Then union all neighbors with the position requested
-        // Then add to the other array that keeps track of colors and fun stuff
         ArrayList<Integer> neighbors = getNeighborsBlue(convertToIndex(position));
+
         if(!this.occupied.contains(position)){
             this.occupied.add(position);
             this.insertedBlues.add(position);
+
+            for(Integer neighbor : neighbors){
+                boolean isRightEdge = isRightEdge(Arrays.asList(board).indexOf(neighbor));
+                boolean isLeftEdge = isLeftEdge(Arrays.asList(board).indexOf(neighbor));
+
+                if(insertedBlues.contains(neighbor) || isLeftEdge){
+                    blueSet.union(Arrays.asList(board).indexOf(neighbor), Arrays.asList(board).indexOf(position));
+                }
+
+                if(isRightEdge){
+                    blueSet.union(Arrays.asList(board).indexOf(position), Arrays.asList(board).indexOf(neighbor));
+                }
+            }
         }
 
         if(displayNeighbors){
-            System.out.println(neighbors.toString());
+            // System.out.println(neighbors.toString());
+            blueSet.print();
+        }
+
+        int rightEdge = Arrays.asList(board).indexOf((boardSize * boardSize) + 4);
+        int leftEdge = Arrays.asList(board).indexOf((boardSize * boardSize) + 3);
+        
+        if(blueSet.find(rightEdge) == blueSet.find(leftEdge)){
+            System.out.println("Blue Wins!");
         }
         return true;
     }
 
     public boolean playRed(int position, boolean displayNeighbors){
         ArrayList<Integer> neighbors = getNeighborsRed(convertToIndex(position));
+        
         if(!this.occupied.contains(position)){
             this.occupied.add(position);
             this.insertedReds.add(position);
+
+            for(Integer neighbor : neighbors){
+                boolean isBottomEdge = isBottomEdge(Arrays.asList(board).indexOf(neighbor));
+                boolean isTopEdge = isTopEdge(Arrays.asList(board).indexOf(neighbor));
+
+                if(insertedReds.contains(neighbor) || isBottomEdge){
+                    redSet.union(Arrays.asList(board).indexOf(neighbor), Arrays.asList(board).indexOf(position));
+                }
+                if(isTopEdge){
+                    redSet.union(Arrays.asList(board).indexOf(position), Arrays.asList(board).indexOf(neighbor));
+                } 
+            }
         }
     
         if(displayNeighbors){
-            System.out.println(neighbors.toString());
+            // System.out.println(neighbors.toString());
+            redSet.print();
+            
         }
+        int topEdge = Arrays.asList(board).indexOf((boardSize * boardSize) + 1);
+        int bottomEdge = Arrays.asList(board).indexOf((boardSize * boardSize) + 2);
+        
+        if(redSet.find(topEdge) == redSet.find(bottomEdge)){
+            System.out.println("Red Wins!");
+        }
+
         return false;
     }
 
