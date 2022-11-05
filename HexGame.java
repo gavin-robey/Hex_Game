@@ -1,15 +1,10 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
-
-import javax.sound.sampled.SourceDataLine;
-
 import java.util.LinkedHashSet;
 
 public class HexGame {
     private int boardSize;
-    private int BLUE;
-    private int RED;
     private int rowSize;
     private int totalBoardSize;
     private Integer[] board;
@@ -21,8 +16,6 @@ public class HexGame {
 
     public HexGame(int boardSize){
         this.boardSize = boardSize;
-        this.RED = (boardSize * boardSize) + 5;
-        this.BLUE = (boardSize * boardSize) + 6;
         this.rowSize = boardSize + 2;
         this.totalBoardSize = rowSize * rowSize;
         this.board = new Integer[totalBoardSize];
@@ -52,24 +45,28 @@ public class HexGame {
         }
     }
 
-    public void printBoard(){
-        for(int i = 0; i < board.length; i++){
-            System.out.print(board[i] + " ");
-            if((i - (boardSize + 1)) % (boardSize + 2) == 0){
-                System.out.println();
-            }
-        }
+    public Integer[] getBoard(){
+        return this.board;
     }
 
-    public Integer[] getBoard(){return this.board;}
-    public int getBoardSize(){ return this.boardSize;}
-    public int getBlue(){return this.BLUE;}
-    public int getRed(){return this.RED;}
+    public int getBoardSize(){
+        return this.boardSize;
+    }
 
-    private boolean isTopEdge(int index){ return index < this.rowSize; }
-    private boolean isBottomEdge(int index){ return index >= this.totalBoardSize - this.rowSize; }
-    private boolean isLeftEdge(int index){ return index % this.rowSize == 0;}
-    private boolean isRightEdge(int index){ return (index - (this.boardSize + 1)) % this.rowSize == 0; }
+    private boolean isTopEdge(int index){ 
+        return index < this.rowSize;
+    }
+    private boolean isBottomEdge(int index){ 
+        return index >= this.totalBoardSize - this.rowSize; 
+    }
+
+    private boolean isLeftEdge(int index){ 
+        return index % this.rowSize == 0;
+    }
+
+    private boolean isRightEdge(int index){ 
+        return (index - (this.boardSize + 1)) % this.rowSize == 0; 
+    }
 
     public boolean isEdge(int index){
         return isTopEdge(index) || isBottomEdge(index)||  isLeftEdge(index) || isRightEdge(index);
@@ -105,17 +102,13 @@ public class HexGame {
         }
 
         if(displayNeighbors){
-            // System.out.println(neighbors.toString());
-            blueSet.print();
+            System.out.println(neighbors.toString());
         }
 
         int rightEdge = Arrays.asList(board).indexOf((boardSize * boardSize) + 4);
         int leftEdge = Arrays.asList(board).indexOf((boardSize * boardSize) + 3);
-        
-        if(blueSet.find(rightEdge) == blueSet.find(leftEdge)){
-            System.out.println("Blue Wins!");
-        }
-        return true;
+
+        return blueSet.find(rightEdge) == blueSet.find(leftEdge);
     }
 
     public boolean playRed(int position, boolean displayNeighbors){
@@ -139,18 +132,13 @@ public class HexGame {
         }
     
         if(displayNeighbors){
-            // System.out.println(neighbors.toString());
-            redSet.print();
-            
+            System.out.println(neighbors.toString());            
         }
+
         int topEdge = Arrays.asList(board).indexOf((boardSize * boardSize) + 1);
         int bottomEdge = Arrays.asList(board).indexOf((boardSize * boardSize) + 2);
         
-        if(redSet.find(topEdge) == redSet.find(bottomEdge)){
-            System.out.println("Red Wins!");
-        }
-
-        return false;
+        return redSet.find(topEdge) == redSet.find(bottomEdge);
     }
 
     private int convertToIndex(int position){

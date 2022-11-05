@@ -14,7 +14,7 @@ public class Assignment6Driver {
 
     
     public static void main(String[] args) {
-        // testGame();
+        testGame();
         playGame("moves1.txt");
         System.out.println();
         playGame("moves2.txt");    
@@ -23,17 +23,33 @@ public class Assignment6Driver {
     private static void playGame(String filename) {
         HexGame game = new HexGame(11);
         File file = new File(filename);
+        boolean redWon = false;
+        boolean blueWon = false;
+        int lastPosRed = 0;
+        int lastPosBlue = 0;
         try (Scanner input = new Scanner(file)) {
             int count = 0;
             while (input.hasNext()) {
                 if(count % 2 == 0){
-                    game.playBlue(input.nextInt(), false);
+                    lastPosBlue = input.nextInt();
+                    blueWon = game.playBlue(lastPosBlue, false);
                     count++;
                 }else{
-                    game.playRed(input.nextInt(), false);
+                    lastPosRed = input.nextInt();
+                    redWon = game.playRed(lastPosRed, false);
                     count++;
                 } 
+                if(redWon || blueWon){
+                    break;
+                }
             }
+
+            if(redWon){
+                System.out.println("Red wins with move at position " + lastPosRed + "!!");
+            }else if(blueWon){
+                System.out.println("Blue wins with move at position " + lastPosBlue + "!!");
+            }
+
             printGrid(game);
         }
         catch (java.io.IOException ex) {
@@ -63,7 +79,7 @@ public class Assignment6Driver {
         game.playBlue(62, true);
 
         System.out.println();
-        game.printBoard();
+        printGrid(game);
     }
 
     private static void printGrid(HexGame game) {
