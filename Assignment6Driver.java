@@ -3,16 +3,9 @@ import java.util.Scanner;
 
 public class Assignment6Driver {
     public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
+    public static final String ANSI_BLUE = "\u001B[34m";    
 
-    
     public static void main(String[] args) {
         testGame();
         playGame("moves1.txt");
@@ -20,6 +13,15 @@ public class Assignment6Driver {
         playGame("moves2.txt");    
     }
 
+    /**
+     * Initializes a new HexGame and reads a file of moves
+     * This method then loops over each move and calls playBlue or playRed to see if there is a winner
+     * If there is a winner, the loop stops, and the result is printed to the console
+     * Then the complete board is printed to the console
+     * 
+     * @param filename A file of moves that will be played
+     * @return void
+     */
     private static void playGame(String filename) {
         HexGame game = new HexGame(11);
         File file = new File(filename);
@@ -27,6 +29,7 @@ public class Assignment6Driver {
         boolean blueWon = false;
         int lastPosRed = 0;
         int lastPosBlue = 0;
+
         try (Scanner input = new Scanner(file)) {
             int count = 0;
             while (input.hasNext()) {
@@ -57,6 +60,12 @@ public class Assignment6Driver {
         }
     }
 
+    /**
+     * Used for debugging to see if neighbors for a given index are correct
+     * Then prints out the finished game
+     * 
+     * @return void
+     */
     private static void testGame() {
         HexGame game = new HexGame(11);
         
@@ -82,6 +91,14 @@ public class Assignment6Driver {
         printGrid(game);
     }
 
+    /**
+     * Loops over the entire board and prints each blank hex as a 0 
+     * If a blue is selected, then a blue B is printed out
+     * If a red is selected, then a red R is printed out
+     * 
+     * @param game a HexGame object used to access the current game
+     * @return void 
+     */
     private static void printGrid(HexGame game) {
         Integer[] board = game.getBoard();
         int elementCount = 1;

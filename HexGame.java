@@ -4,15 +4,15 @@ import java.util.Set;
 import java.util.LinkedHashSet;
 
 public class HexGame {
-    private int boardSize;
-    private int rowSize;
-    private int totalBoardSize;
-    private Integer[] board;
-    private Set<Integer> insertedReds;
-    private Set<Integer> insertedBlues;
-    private Set<Integer> occupied;
-    private DisjointSet redSet;
-    private DisjointSet blueSet;
+    private int boardSize; 
+    private int rowSize; // The board size including edges
+    private int totalBoardSize; // the board size squared 
+    private Integer[] board; // Represents the board including edges
+    private Set<Integer> insertedReds; // Keeps track of all red plays that have been inserted 
+    private Set<Integer> insertedBlues; // Keeps track of all blue plays that have been inserted 
+    private Set<Integer> occupied; // Keeps track of all occupied hexes 
+    private DisjointSet redSet; // The red disjoint set 
+    private DisjointSet blueSet; // the blue disjoint set 
 
     public HexGame(int boardSize){
         this.boardSize = boardSize;
@@ -27,6 +27,9 @@ public class HexGame {
         buildBoard();
     }
 
+    /**
+     * Calculates which indexes are edges and gives a specific value to blue edges and red edges
+     */
     private void buildBoard(){
         int total = 1;
         for(int i = 0; i < board.length; i++){
@@ -45,41 +48,82 @@ public class HexGame {
         }
     }
 
+    /**
+     * @return The created board including edges
+     */
     public Integer[] getBoard(){
         return this.board;
     }
 
+    /**
+     * @return the boardSize
+     */
     public int getBoardSize(){
         return this.boardSize;
     }
 
+    /**
+     * @param index a current index 
+     * @return if the index is a topEdge then return true
+     */
     private boolean isTopEdge(int index){ 
         return index < this.rowSize;
     }
+
+    /**
+     * @param index a current index 
+     * @return if the index is a bottomEdge then return true
+     */
     private boolean isBottomEdge(int index){ 
         return index >= this.totalBoardSize - this.rowSize; 
     }
 
+    /**
+     * @param index a current index 
+     * @return if the index is a leftEdge then return true
+     */
     private boolean isLeftEdge(int index){ 
         return index % this.rowSize == 0;
     }
 
+    /**
+     * @param index a current index 
+     * @return if the index is a rightEdge then return true
+     */
     private boolean isRightEdge(int index){ 
         return (index - (this.boardSize + 1)) % this.rowSize == 0; 
     }
 
+    /**
+     * @param index a current index 
+     * @return if the index is an edge then return true
+     */
     public boolean isEdge(int index){
         return isTopEdge(index) || isBottomEdge(index)||  isLeftEdge(index) || isRightEdge(index);
     }
 
+    /**
+     * @param position a position on the board, not an index of the board array
+     * @return if the position is a blue play return true
+     */
     public boolean blueContains(int position){
         return insertedBlues.contains(position);
     }
 
+    /**
+     * @param position a position on the board, not an index of the board array
+     * @return if the position is a red play return true
+     */
     public boolean redContains(int position){
         return insertedReds.contains(position);
     }
 
+    /**
+     * 
+     * @param position a position played by the blue player
+     * @param displayNeighbors determines if the neighbors found is printed to the console
+     * @return if find(leftEdge) == find(rightEdge) then blue has won and true is returned 
+     */
     public boolean playBlue(int position, boolean displayNeighbors){
         ArrayList<Integer> neighbors = getNeighborsBlue(convertToIndex(position));
 
