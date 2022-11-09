@@ -29,21 +29,25 @@ public class Assignment6Driver {
         boolean blueWon = false;
         int lastPosRed = 0;
         int lastPosBlue = 0;
-
         try (Scanner input = new Scanner(file)) {
             int count = 0;
             while (input.hasNext()) {
-                if(count % 2 == 0){
-                    lastPosBlue = input.nextInt();
-                    blueWon = game.playBlue(lastPosBlue, false);
-                    count++;
-                }else{
-                    lastPosRed = input.nextInt();
-                    redWon = game.playRed(lastPosRed, false);
-                    count++;
-                } 
-                if(redWon || blueWon){
-                    break;
+                int play = input.nextInt();
+
+                // ensures a play is valid on any size of board
+                if(play <= (game.getBoardSize() * game.getBoardSize())){
+                    if(count % 2 == 0){
+                        lastPosBlue = play;
+                        blueWon = game.playBlue(lastPosBlue, false);
+                        count++;
+                    }else{
+                        lastPosRed = play;
+                        redWon = game.playRed(lastPosRed, false);
+                        count++;
+                    } 
+                    if(redWon || blueWon){
+                        break;
+                    }
                 }
             }
 
@@ -52,7 +56,6 @@ public class Assignment6Driver {
             }else if(blueWon){
                 System.out.println("Blue wins with move at position " + lastPosBlue + "!!");
             }
-
             printGrid(game);
         }
         catch (java.io.IOException ex) {
