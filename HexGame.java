@@ -130,7 +130,7 @@ public class HexGame {
     public boolean playBlue(int position, boolean displayNeighbors){
         ArrayList<Integer> neighbors = getNeighborsBlue(convertToIndex(position));
 
-        if(!this.occupied.contains(position)){
+        if(!this.occupied.contains(position) || !displayNeighbors){
             this.occupied.add(position);
             this.insertedBlues.add(position);
 
@@ -149,7 +149,7 @@ public class HexGame {
         }
 
         if(displayNeighbors){
-            System.out.println(neighbors.toString());
+            System.out.println("Cell " + position +": " + neighbors.toString());
         }
 
         int rightEdge = Arrays.asList(board).indexOf((boardSize * boardSize) + 4);
@@ -170,7 +170,7 @@ public class HexGame {
     public boolean playRed(int position, boolean displayNeighbors){
         ArrayList<Integer> neighbors = getNeighborsRed(convertToIndex(position));
         
-        if(!this.occupied.contains(position)){
+        if(!this.occupied.contains(position) || !displayNeighbors){
             this.occupied.add(position);
             this.insertedReds.add(position);
 
@@ -188,7 +188,7 @@ public class HexGame {
         }
     
         if(displayNeighbors){
-            System.out.println(neighbors.toString());            
+            System.out.println("Cell " + position +": " + neighbors.toString());            
         }
 
         int topEdge = Arrays.asList(board).indexOf((boardSize * boardSize) + 1);
