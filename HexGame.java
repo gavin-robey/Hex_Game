@@ -28,27 +28,6 @@ public class HexGame {
     }
 
     /**
-     * Calculates which indexes are edges and gives a specific value to blue edges and red edges
-     */
-    private void buildBoard(){
-        int total = 1;
-        for(int i = 0; i < board.length; i++){
-            if(i < this.rowSize){
-                board[i] = (boardSize * boardSize) + 1;
-            }else if(i >= this.totalBoardSize - this.rowSize){
-                board[i] = (boardSize * boardSize) + 2;
-            }else if(i % this.rowSize == 0){
-                board[i] = (boardSize * boardSize) + 3;
-            }else if((i - (this.boardSize + 1)) % this.rowSize == 0){
-                board[i] = (boardSize * boardSize) + 4;
-            }else{
-                board[i] = total;
-                total++;
-            }
-        }
-    }
-
-    /**
      * @return The created board including edges
      */
     public Integer[] getBoard(){
@@ -119,6 +98,30 @@ public class HexGame {
     }
 
     /**
+     * Calculates which indexes are edges and gives a specific value to blue edges and red edges
+     */
+    private void buildBoard(){
+        int total = 1;
+        for(int i = 0; i < board.length; i++){
+            if(isTopEdge(i)){
+                board[i] = (boardSize * boardSize) + 1;
+            }else if(isBottomEdge(i)){
+                board[i] = (boardSize * boardSize) + 2;
+            }else if(isLeftEdge(i)){
+                board[i] = (boardSize * boardSize) + 3;
+            }else if(isRightEdge(i)){
+                board[i] = (boardSize * boardSize) + 4;
+            }else{
+                board[i] = total;
+                total++;
+            }
+        }
+    }
+
+    /**
+     * Uses the occupied set to check if the given position is occupied
+     * If the position is not occupied then all the neighbors are searched 
+     * If a neighbor is occupied by a blue, then the current position is unioned with the occupied neighbor
      * 
      * @param position a position played by the blue player
      * @param displayNeighbors determines if the neighbors found is printed to the console
@@ -155,6 +158,15 @@ public class HexGame {
         return blueSet.find(rightEdge) == blueSet.find(leftEdge);
     }
 
+    /**
+     * Uses the occupied set to check if the given position is occupied
+     * If the position is not occupied then all the neighbors are searched 
+     * If a neighbor is occupied by a red, then the current position is unioned with the occupied neighbor
+     * 
+     * @param position a position played by the blue player
+     * @param displayNeighbors determines if the neighbors found is printed to the console
+     * @return if find(leftEdge) == find(rightEdge) then red has won and true is returned 
+     */
     public boolean playRed(int position, boolean displayNeighbors){
         ArrayList<Integer> neighbors = getNeighborsRed(convertToIndex(position));
         
@@ -185,6 +197,11 @@ public class HexGame {
         return redSet.find(topEdge) == redSet.find(bottomEdge);
     }
 
+    /**
+     * Finds the index of the given position ignoring edges on the board
+     * @param position A given position on the board
+     * @return The index of the given position ignoring edges
+     */
     private int convertToIndex(int position){
         int count = 1;
         int index = 0;
@@ -199,7 +216,11 @@ public class HexGame {
         return index;
     }
 
-    // given an index, each neighbor index is found then each neighbor value is returned
+    /**
+     * Finds all red neighbors of a given index
+     * @param index an index to the list of all 
+     * @return An ArrayList of all the neighbors found
+     */
     private ArrayList<Integer> getNeighborsRed(int index){
         ArrayList<Integer> allNeighbors = new ArrayList<>();
         
@@ -231,6 +252,11 @@ public class HexGame {
         return allNeighbors;
     }
 
+    /**
+     * Finds all blue neighbors of a given index
+     * @param index an index to the list of all 
+     * @return An ArrayList of all the neighbors found
+     */
     private ArrayList<Integer> getNeighborsBlue(int index){
         ArrayList<Integer> allNeighbors = new ArrayList<>();
 
