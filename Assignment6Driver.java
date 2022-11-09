@@ -8,6 +8,7 @@ public class Assignment6Driver {
 
     public static void main(String[] args) {
         testGame();
+        System.out.println();
         playGame("moves1.txt");
         System.out.println();
         playGame("moves2.txt");    
