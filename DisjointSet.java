@@ -62,25 +62,20 @@ public class DisjointSet {
     }
 
     /**
-     * Calls the recursive findParent method and sets the root found to be the new parent of the given node
+     * If the given node is the root node then return the node
+     * Otherwise, recursively find the root of each node
+     * On each node, set the reference to the root thus performing path compression
      * @param node The root node is searched from this given node
      * @return The root node of the given node
      */
     public int find(int node){
-        int foundParent = findParent(node);
-        parent[node] = foundParent;
-        return foundParent;
-    }
-
-    /**
-     * If the given node is not root node then recursively call find() until this condition is met
-     * @param node The root node is searched from this given node
-     * @return The root node of the given node
-     */
-    private int findParent(int node){
-        if (parent[node] != node) {
-            parent[node] = find(parent[node]);
+        if (parent[node] == node) {
+            return node;
         }
-        return parent[node];
+        else {
+            int result = find(parent[node]);
+            parent[node] = result;
+            return result;
+        }
     }
 }
