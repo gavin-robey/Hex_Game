@@ -13,7 +13,7 @@ Below are two example games where both blue and red win:
 
 &nbsp;
 
-![blueWin](blueWin.png)
+![redWin](redWin.png)
 
 &nbsp;
 
