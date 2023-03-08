@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+    id 'application'      
+}
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+version = "1.0"
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'HexDriver'
+    }
+}
+
+// used to run and accept commands from the command line
+run {  
+    if (project.hasProperty('runArgs')) {
+        args project.getProperty('runArgs').split()
+    }
+}
+
+mainClassName = 'HexDriver'

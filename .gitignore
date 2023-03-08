@@ -1,9 +1,29 @@
-venv
+# Gradle build directories
+build/
+out/
+
+# Gradle files
+.gradle/
+*.iml
+.idea/
+
+# Java class files
+*.class
+
+# Maven files
+target/
+
+# Eclipse files
+bin/
+.settings/
+.project
+.classpath
+
+# Intellij IDEA
+*.ipr
+*.iws
+*.iml
+out/
+
 .DS_Store
-__pycache__
-*.pyc
-*.csv
-*.zip
-*.bak
-db.sqlite3
 
