@@ -1,14 +1,14 @@
 import java.io.File;
 import java.util.Scanner;
 
-public class Assignment6Driver {
+public class Driver {
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_BLUE = "\u001B[34m";    
 
     public static void main(String[] args) {
-        testGame();
-        System.out.println();
+        // testGame();
+        // System.out.println();
         playGame("moves1.txt");
         System.out.println();
         playGame("moves2.txt");    
