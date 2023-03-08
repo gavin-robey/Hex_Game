@@ -129,8 +129,8 @@ public class HexGame {
      */
     public boolean playBlue(int position, boolean displayNeighbors){
         ArrayList<Integer> neighbors = getNeighborsBlue(convertToIndex(position));
-
-        if(!this.occupied.contains(position) || !displayNeighbors){
+        
+        if(!this.occupied.contains(position)){
             this.occupied.add(position);
             this.insertedBlues.add(position);
 
@@ -145,13 +145,9 @@ public class HexGame {
                 if(isRightEdge){
                     blueSet.union(Arrays.asList(board).indexOf(position), Arrays.asList(board).indexOf(neighbor));
                 }
-            }
+            } 
         }
-
-        if(displayNeighbors){
-            System.out.println("Cell " + position +": " + neighbors.toString());
-        }
-
+        
         int rightEdge = Arrays.asList(board).indexOf((boardSize * boardSize) + 4);
         int leftEdge = Arrays.asList(board).indexOf((boardSize * boardSize) + 3);
 
@@ -169,8 +165,8 @@ public class HexGame {
      */
     public boolean playRed(int position, boolean displayNeighbors){
         ArrayList<Integer> neighbors = getNeighborsRed(convertToIndex(position));
-        
-        if(!this.occupied.contains(position) || !displayNeighbors){
+
+        if(!this.occupied.contains(position)){
             this.occupied.add(position);
             this.insertedReds.add(position);
 
@@ -185,10 +181,6 @@ public class HexGame {
                     redSet.union(Arrays.asList(board).indexOf(position), Arrays.asList(board).indexOf(neighbor));
                 } 
             }
-        }
-    
-        if(displayNeighbors){
-            System.out.println("Cell " + position +": " + neighbors.toString());            
         }
 
         int topEdge = Arrays.asList(board).indexOf((boardSize * boardSize) + 1);

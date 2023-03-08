@@ -9,9 +9,7 @@ public class HexDriver{
     public static void main(String[] args) {
         // testGame();
         // System.out.println();
-        playGame("moves1.txt");
-        System.out.println();
-        playGame("moves2.txt");    
+        playGame(); 
     }
 
     /**
@@ -23,27 +21,38 @@ public class HexDriver{
      * @param filename A file of moves that will be played
      * @return void
      */
-    private static void playGame(String filename) {
+    private static void playGame(){
+        Scanner scanner = new Scanner(System.in);
         HexGame game = new HexGame(11);
-        File file = new File(filename);
         boolean redWon = false;
         boolean blueWon = false;
         int lastPosRed = 0;
         int lastPosBlue = 0;
-        try (Scanner input = new Scanner(file)) {
+        boolean isBlue = true;
+        try {
             int count = 0;
-            while (input.hasNext()) {
-                int play = input.nextInt();
+            System.out.println();
+            printGrid(game);
+            while (true) {    
+                System.out.println();
+                System.out.print(isBlue ? "Blue enter a number 1-121: " : "Red enter a number 1-121: ");
+                int play = scanner.nextInt();
 
                 // ensures a play is valid on any size of board
                 if(play <= (game.getBoardSize() * game.getBoardSize())){
                     if(count % 2 == 0){
                         lastPosBlue = play;
-                        blueWon = game.playBlue(lastPosBlue, false);
+                        blueWon = game.playBlue(play, false);
+                        System.out.println();
+                        printGrid(game);
+                        isBlue = false;
                         count++;
                     }else{
                         lastPosRed = play;
-                        redWon = game.playRed(lastPosRed, false);
+                        redWon = game.playRed(play, false);
+                        System.out.println();
+                        printGrid(game);
+                        isBlue = true;
                         count++;
                     } 
                     if(redWon || blueWon){
@@ -51,16 +60,18 @@ public class HexDriver{
                     }
                 }
             }
-
             if(redWon){
+                System.out.println();
                 System.out.println("Red wins with move at position " + lastPosRed + "!!");
             }else if(blueWon){
+                System.out.println();
                 System.out.println("Blue wins with move at position " + lastPosBlue + "!!");
             }
-            printGrid(game);
         }
-        catch (java.io.IOException ex) {
-            System.out.println("An error occurred trying to read the moves file: " + ex);
+        catch (Exception e) {
+            System.out.println("Exiting program...");
+        } finally {
+            scanner.close();
         }
     }
 
@@ -131,5 +142,21 @@ public class HexDriver{
             }
         }
         System.out.print(boardElements);
+    }
+
+    /**
+     * This method is used for formatting the grid, it returns 3 spaces if the input number has 
+     * 1 digit, 2 spaces if the input number is 2 digits and 1 space if the input number is 3 digits 
+     * @param num input number 
+     * @return a specified amount of spaces
+     */
+    private static String getSpaces(int num, boolean isLetter) {
+        if (num >= 100) {
+            return " ";
+        } else if (num >= 10 || isLetter) {
+            return "  ";
+        } else {
+            return "   ";
+        }
     }
 }
